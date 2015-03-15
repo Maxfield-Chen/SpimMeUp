@@ -22,10 +22,7 @@ while(inputInt % 4 == 0){
 int min = 9;
 while(inputInt != 0) {
   if(inputInt % 10 < min) min = inputInt % 10;
-  else {
-
     inputInt /= 10;
-  }
 }
 
 }

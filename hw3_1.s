@@ -25,6 +25,7 @@ main:
   lw $s2, count # Loop counter
   lw $s3, count # One Counter
   lw $s4, count # Div 4 Counter
+  li $s5, 9 # Smallest Decimal Digit
 
   li $t2, 2
   #Check first 16 bits for 0's
@@ -75,6 +76,14 @@ main:
     syscall
 
   #Highest Power of 4
+  #Check the zero case first
+  beq $t1, 0, fourZeroCase
+  j whileMod4
+
+  fourZeroCase:
+    li $s4, 0
+    j exitWhileMod4
+
   li $t2, 4
   whileMod4:
     div $t0, $t2 
@@ -95,6 +104,42 @@ main:
     li $v0, 4
     la $a0, nl
     syscall
+
+  li $s5, 9 # Prep the min number
+  li $t2, 10 # Prep the div number
+  #Now find the smallest number in the decimal sequence
+  #Check the zero case first.
+  beq $t1, 0, decZeroCase
+  j whileMinDec
+
+  decZeroCase:
+    li $s5, 0
+    j exitMinDec
+
+#Then proceed to the regular case.
+  whileMinDec:
+    beq $t1, 0, exitMinDec
+    div $t1, $t2 
+    mfhi $t3 # Store the mod value
+    mflo $t1 # store the output of the division by 10
+    blt $t3, $s5, updateMin # If the mod value is less than our current min update the min
+    j whileMinDec # Reset loop
+
+  updateMin:
+    move $s5, $t3 #Update min val
+    j whileMinDec #Return to loop
+  #Print out the end chpt1 prompts
+  exitMinDec:
+    li $v0, 4
+    la $a0, smallestd
+    syscall
+    li $v0, 1
+    move $a0, $s5
+    syscall
+    li $v0, 4
+    la $a0, nl
+    syscall
+
 
   li $v0, 10
   syscall
