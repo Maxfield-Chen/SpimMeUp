@@ -24,6 +24,7 @@ main:
   lw $s1, count # Zero Counter
   lw $s2, count # Loop counter
   lw $s3, count # One Counter
+  lw $s4, count # Div 4 Counter
 
   li $t2, 2
   #Check first 16 bits for 0's
@@ -68,6 +69,28 @@ main:
     syscall
     li $v0, 1
     move $a0, $s3
+    syscall
+    li $v0, 4
+    la $a0, nl
+    syscall
+
+  #Highest Power of 4
+  li $t2, 4
+  whileMod4:
+    div $t0, $t2 
+    mfhi $t3 #Store the mod value
+    mflo $t0 # Store the output of the division by 4.
+    bne $t3, 0, exitWhileMod4 #Check our two bits to see if they contain a one.
+    addi $s4, $s4, 1 #Increment our div 4 counter by 1.
+    j whileMod4
+
+  exitWhileMod4:
+  #Print out end chpt1 prompts
+    li $v0, 4
+    la $a0, largepf
+    syscall
+    li $v0, 1
+    move $a0, $s4
     syscall
     li $v0, 4
     la $a0, nl
