@@ -18,11 +18,12 @@ main:
   li $v0, 5
   syscall
   # Init Vars
-  move $s0, $v0  
-  move $t0, $s0
-  move $t1, $s0
-  lw $s1, count
-  lw $s2, count
+  move $s0, $v0 # Int to be read  
+  move $t0, $s0 # Copy of Int
+  move $t1, $s0 # Copy of Int
+  lw $s1, count # Zero Counter
+  lw $s2, count # Loop counter
+  lw $s3, count # One Counter
 
   li $t2, 2
   #Check first 16 bits for 0's
@@ -43,6 +44,30 @@ main:
     syscall
     li $v0, 1
     move $a0, $s1
+    syscall
+    li $v0, 4
+    la $a0, nl
+    syscall
+
+  #Now Check the second 16 bits for 1's
+  lw $s2, count #Reset the loop counter
+  oneCheck: bge $s2, 16, oneExit
+    add $s2, $s2, 1 # Increment the loop counter.
+    div $s0, $t2
+    mfhi $t3 #Store the mod value
+    mflo $s0 # Store the output of the division by 2.
+    beq $t3, 1, leftIncrement #Test the result and increment the counter if needed.
+    j oneCheck
+  leftIncrement:
+    add $s3, $s3, 1  #Increment the one counter.
+    j oneCheck
+  oneExit:
+  #Print out the end chpt1 prompts 
+    li $v0, 4
+    la $a0, lefthand
+    syscall
+    li $v0, 1
+    move $a0, $s3
     syscall
     li $v0, 4
     la $a0, nl
