@@ -117,55 +117,67 @@ main:
 	
 	exit_loop:
 	
+	#print the results string
 	li $v0, 4
 	la $a0, results
 	syscall
 	
+	#print whitespace count string
 	li $v0, 4
 	la $a0, whitespace
 	syscall
 	
+	#print the number of whitespaces (single space, tab, newline)
 	li $v0, 1
 	move $a0, $s2
 	syscall
 	
+	#a new line
 	li $v0, 4
 	la $a0, new_line
 	syscall
 	
+	#print non-whitespace count string
 	li $v0, 4
 	la $a0, non_whitespace
 	syscall
 	
+	#print the number of non-whitespace characters
 	li $v0, 1
 	move $a0, $s3
 	syscall
 	
+	#another new line
 	li $v0, 4
 	la $a0, new_line
 	syscall
 	
+	#words count string
 	li $v0, 4
 	la $a0, words
 	syscall
 	
+	#print the number of words
 	li $v0, 1
 	move $a0, $s4
 	syscall 
 	
+	#another new line
 	li $v0, 4
 	la $a0, new_line
 	syscall
 	
+	#checks if the program found the pattern, jumps to print_found if it did
 	li $v0, 4
 	beq $t5, 1 print_found
 	
+	#pattern not found 
 	la $a0, not_found
 	syscall
-	
-	li $v0, 10
+	li $v0, 10 #just exit since there's nothing more to do
 	syscall
 	
+	#pattern found
 	print_found:
 		la $a0, found
 		syscall 
