@@ -1,0 +1,23 @@
+char c
+int seen_char=0
+int seen_pattern=0
+while(c!=0)
+		if(c is whitespace)
+			increment whitespace
+			if(seen_char==1)
+				seen_char=0
+				increment_word
+		else
+			increment non_whitespace
+			if(seen_char==0)
+				seen_char=1
+		char p
+		if(seen_pattern==0)
+			if(p==0)
+				seen_pattern=1
+				break
+			if(c==p)
+				p++
+			else
+				reset p
+			
